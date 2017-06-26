@@ -1,0 +1,8 @@
+{
+    "botman/driver-config": [
+        "stubs/cisco-spark.php"
+    ],
+    "botman/driver": [
+        "BotMan\\Drivers\\CiscoSpark\\CiscoSparkDriver"
+    ]
+}
