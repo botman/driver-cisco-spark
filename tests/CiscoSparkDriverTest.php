@@ -2,12 +2,12 @@
 
 namespace Tests;
 
-use BotMan\BotMan\Http\Curl;
-use BotMan\Drivers\CiscoSpark\CiscoSparkDriver;
 use Mockery as m;
+use BotMan\BotMan\Http\Curl;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use BotMan\Drivers\CiscoSpark\CiscoSparkDriver;
 
 class CiscoSparkDriverTest extends PHPUnit_Framework_TestCase
 {
@@ -20,8 +20,8 @@ class CiscoSparkDriverTest extends PHPUnit_Framework_TestCase
 
         return new CiscoSparkDriver($request, [
             'cisco-spark' => [
-                'token' => 'my-token'
-            ]
+                'token' => 'my-token',
+            ],
         ], $htmlInterface);
     }
 
@@ -44,8 +44,8 @@ class CiscoSparkDriverTest extends PHPUnit_Framework_TestCase
                 'roomId' => 'Y2lzY29zcGFyazovL3VzL1JPT00vY2RlMWRkNDAtMmYwZC0xMWU1LWJhOWMtN2I2NTU2ZDIyMDdi',
                 'personId' => 'Y2lzY29zcGFyazovL3VzL1BFT1BMRS9lM2EyNjA4OC1hNmRiLTQxZjgtOTliMC1hNTEyMzkyYzAwOTg',
                 'personEmail' => 'person@example.com',
-                'created' => '2015-12-04T17:33:56.767Z'
-            ]
+                'created' => '2015-12-04T17:33:56.767Z',
+            ],
         ];
     }
 
@@ -77,7 +77,7 @@ class CiscoSparkDriverTest extends PHPUnit_Framework_TestCase
     public function it_returns_the_message_object()
     {
         $botResponseData = [
-            'id' => 'bot-id'
+            'id' => 'bot-id',
         ];
         $botResponse = new Response(json_encode($botResponseData));
 
@@ -87,14 +87,14 @@ class CiscoSparkDriverTest extends PHPUnit_Framework_TestCase
             ->with('https://api.ciscospark.com/v1/people/me', [], [
                 'Accept:application/json',
                 'Content-Type:application/json',
-                'Authorization:Bearer my-token'
+                'Authorization:Bearer my-token',
             ])
             ->andReturn($botResponse);
 
         $msgResponseData = [
             'text' => 'Hi Julia',
             'roomId' => 'room-1234567890',
-            'personId' => 'person-0987654321'
+            'personId' => 'person-0987654321',
         ];
         $msgResponse = new Response(json_encode($msgResponseData));
 
@@ -103,7 +103,7 @@ class CiscoSparkDriverTest extends PHPUnit_Framework_TestCase
             ->with('https://api.ciscospark.com/v1/messages/Y2lzY29zcGFyazovL3VzL01FU1NBR0UvMzIzZWUyZjAtOWFhZC0xMWU1LTg1YmYtMWRhZjhkNDJlZjlj', [], [
                 'Accept:application/json',
                 'Content-Type:application/json',
-                'Authorization:Bearer my-token'
+                'Authorization:Bearer my-token',
             ])
             ->andReturn($msgResponse);
 
@@ -115,7 +115,7 @@ class CiscoSparkDriverTest extends PHPUnit_Framework_TestCase
     public function it_returns_the_message_text()
     {
         $botResponseData = [
-            'id' => 'bot-id'
+            'id' => 'bot-id',
         ];
         $botResponse = new Response(json_encode($botResponseData));
 
@@ -125,14 +125,14 @@ class CiscoSparkDriverTest extends PHPUnit_Framework_TestCase
             ->with('https://api.ciscospark.com/v1/people/me', [], [
                 'Accept:application/json',
                 'Content-Type:application/json',
-                'Authorization:Bearer my-token'
+                'Authorization:Bearer my-token',
             ])
             ->andReturn($botResponse);
 
         $msgResponseData = [
             'text' => 'Hi Julia',
             'roomId' => 'room-1234567890',
-            'personId' => 'person-0987654321'
+            'personId' => 'person-0987654321',
         ];
         $msgResponse = new Response(json_encode($msgResponseData));
 
@@ -141,7 +141,7 @@ class CiscoSparkDriverTest extends PHPUnit_Framework_TestCase
             ->with('https://api.ciscospark.com/v1/messages/Y2lzY29zcGFyazovL3VzL01FU1NBR0UvMzIzZWUyZjAtOWFhZC0xMWU1LTg1YmYtMWRhZjhkNDJlZjlj', [], [
                 'Accept:application/json',
                 'Content-Type:application/json',
-                'Authorization:Bearer my-token'
+                'Authorization:Bearer my-token',
             ])
             ->andReturn($msgResponse);
 
@@ -153,7 +153,7 @@ class CiscoSparkDriverTest extends PHPUnit_Framework_TestCase
     public function it_detects_bots()
     {
         $botResponseData = [
-            'id' => 'bot-id'
+            'id' => 'bot-id',
         ];
         $botResponse = new Response(json_encode($botResponseData));
 
@@ -163,14 +163,14 @@ class CiscoSparkDriverTest extends PHPUnit_Framework_TestCase
             ->with('https://api.ciscospark.com/v1/people/me', [], [
                 'Accept:application/json',
                 'Content-Type:application/json',
-                'Authorization:Bearer my-token'
+                'Authorization:Bearer my-token',
             ])
             ->andReturn($botResponse);
 
         $msgResponseData = [
             'text' => 'Hi Julia',
             'roomId' => 'room-1234567890',
-            'personId' => 'bot-id'
+            'personId' => 'bot-id',
         ];
         $msgResponse = new Response(json_encode($msgResponseData));
 
@@ -179,7 +179,7 @@ class CiscoSparkDriverTest extends PHPUnit_Framework_TestCase
             ->with('https://api.ciscospark.com/v1/messages/Y2lzY29zcGFyazovL3VzL01FU1NBR0UvMzIzZWUyZjAtOWFhZC0xMWU1LTg1YmYtMWRhZjhkNDJlZjlj', [], [
                 'Accept:application/json',
                 'Content-Type:application/json',
-                'Authorization:Bearer my-token'
+                'Authorization:Bearer my-token',
             ])
             ->andReturn($msgResponse);
 
@@ -191,7 +191,7 @@ class CiscoSparkDriverTest extends PHPUnit_Framework_TestCase
     public function it_returns_the_user_id()
     {
         $botResponseData = [
-            'id' => 'bot-id'
+            'id' => 'bot-id',
         ];
         $botResponse = new Response(json_encode($botResponseData));
 
@@ -201,14 +201,14 @@ class CiscoSparkDriverTest extends PHPUnit_Framework_TestCase
             ->with('https://api.ciscospark.com/v1/people/me', [], [
                 'Accept:application/json',
                 'Content-Type:application/json',
-                'Authorization:Bearer my-token'
+                'Authorization:Bearer my-token',
             ])
             ->andReturn($botResponse);
 
         $msgResponseData = [
             'text' => 'Hi Julia',
             'roomId' => 'room-1234567890',
-            'personId' => 'person-0987654321'
+            'personId' => 'person-0987654321',
         ];
         $msgResponse = new Response(json_encode($msgResponseData));
 
@@ -217,7 +217,7 @@ class CiscoSparkDriverTest extends PHPUnit_Framework_TestCase
             ->with('https://api.ciscospark.com/v1/messages/Y2lzY29zcGFyazovL3VzL01FU1NBR0UvMzIzZWUyZjAtOWFhZC0xMWU1LTg1YmYtMWRhZjhkNDJlZjlj', [], [
                 'Accept:application/json',
                 'Content-Type:application/json',
-                'Authorization:Bearer my-token'
+                'Authorization:Bearer my-token',
             ])
             ->andReturn($msgResponse);
 
@@ -229,7 +229,7 @@ class CiscoSparkDriverTest extends PHPUnit_Framework_TestCase
     public function it_returns_the_channel_id()
     {
         $botResponseData = [
-            'id' => 'bot-id'
+            'id' => 'bot-id',
         ];
         $botResponse = new Response(json_encode($botResponseData));
 
@@ -239,14 +239,14 @@ class CiscoSparkDriverTest extends PHPUnit_Framework_TestCase
             ->with('https://api.ciscospark.com/v1/people/me', [], [
                 'Accept:application/json',
                 'Content-Type:application/json',
-                'Authorization:Bearer my-token'
+                'Authorization:Bearer my-token',
             ])
             ->andReturn($botResponse);
 
         $msgResponseData = [
             'text' => 'Hi Julia',
             'roomId' => 'room-1234567890',
-            'personId' => 'person-0987654321'
+            'personId' => 'person-0987654321',
         ];
         $msgResponse = new Response(json_encode($msgResponseData));
 
@@ -255,7 +255,7 @@ class CiscoSparkDriverTest extends PHPUnit_Framework_TestCase
             ->with('https://api.ciscospark.com/v1/messages/Y2lzY29zcGFyazovL3VzL01FU1NBR0UvMzIzZWUyZjAtOWFhZC0xMWU1LTg1YmYtMWRhZjhkNDJlZjlj', [], [
                 'Accept:application/json',
                 'Content-Type:application/json',
-                'Authorization:Bearer my-token'
+                'Authorization:Bearer my-token',
             ])
             ->andReturn($msgResponse);
 
@@ -272,16 +272,16 @@ class CiscoSparkDriverTest extends PHPUnit_Framework_TestCase
 
         $driver = new CiscoSparkDriver($request, [
             'cisco-spark' => [
-                'token' => 'token'
-            ]
+                'token' => 'token',
+            ],
         ], $htmlInterface);
 
         $this->assertTrue($driver->isConfigured());
 
         $driver = new CiscoSparkDriver($request, [
             'cisco-spark' => [
-                'token' => null
-            ]
+                'token' => null,
+            ],
         ], $htmlInterface);
 
         $this->assertFalse($driver->isConfigured());

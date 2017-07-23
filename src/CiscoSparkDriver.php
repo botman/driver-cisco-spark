@@ -2,17 +2,17 @@
 
 namespace BotMan\Drivers\CiscoSpark;
 
-use BotMan\BotMan\Drivers\HttpDriver;
-use BotMan\BotMan\Messages\Attachments\Location;
-use BotMan\BotMan\Messages\Incoming\Answer;
-use BotMan\BotMan\Messages\Incoming\IncomingMessage;
-use BotMan\BotMan\Messages\Outgoing\OutgoingMessage;
-use BotMan\BotMan\Messages\Outgoing\Question;
 use BotMan\BotMan\Users\User;
 use Illuminate\Support\Collection;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use BotMan\BotMan\Drivers\HttpDriver;
+use BotMan\BotMan\Messages\Incoming\Answer;
+use BotMan\BotMan\Messages\Outgoing\Question;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use BotMan\BotMan\Messages\Attachments\Location;
+use Symfony\Component\HttpFoundation\ParameterBag;
+use BotMan\BotMan\Messages\Incoming\IncomingMessage;
+use BotMan\BotMan\Messages\Outgoing\OutgoingMessage;
 
 class CiscoSparkDriver extends HttpDriver
 {
@@ -41,7 +41,7 @@ class CiscoSparkDriver extends HttpDriver
         return [
             'Accept:application/json',
             'Content-Type:application/json',
-            'Authorization:Bearer '.$this->config->get('token')
+            'Authorization:Bearer '.$this->config->get('token'),
         ];
     }
 
@@ -52,7 +52,7 @@ class CiscoSparkDriver extends HttpDriver
      */
     public function matchesRequest()
     {
-        return ! is_null($this->payload->get('actorId')) && $this->payload->get('resource') === 'messages'  && $this->payload->get('event') === 'created';
+        return ! is_null($this->payload->get('actorId')) && $this->payload->get('resource') === 'messages' && $this->payload->get('event') === 'created';
     }
 
     /**
@@ -174,7 +174,7 @@ class CiscoSparkDriver extends HttpDriver
     }
 
     /**
-     * Returns the chatbot ID
+     * Returns the chatbot ID.
      * @return string
      */
     private function getBotId()
