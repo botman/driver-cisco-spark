@@ -2,8 +2,13 @@
 
 BotMan driver to connect Cisco Spark with [BotMan](https://github.com/botman/botman)
 
-## Contributing
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/botman/driver-cisco-spark.svg?style=flat-square)](https://packagist.org/packages/botman/driver-cisco-spark)
+[![Build Status](https://travis-ci.org/botman/driver-cisco-spark.svg?branch=master)](https://travis-ci.org/botman/driver-cisco-spark)
+[![codecov](https://codecov.io/gh/botman/driver-cisco-spark/branch/master/graph/badge.svg)](https://codecov.io/gh/botman/driver-cisco-spark)
 
+
+## Contributing
+Ï
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Security Vulnerabilities
