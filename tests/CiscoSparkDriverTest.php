@@ -6,8 +6,11 @@ use Mockery as m;
 use BotMan\BotMan\Http\Curl;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use BotMan\BotMan\Messages\Outgoing\Question;
 use Symfony\Component\HttpFoundation\Response;
 use BotMan\Drivers\CiscoSpark\CiscoSparkDriver;
+use BotMan\BotMan\Messages\Incoming\IncomingMessage;
+use BotMan\BotMan\Messages\Outgoing\OutgoingMessage;
 
 class CiscoSparkDriverTest extends PHPUnit_Framework_TestCase
 {
@@ -109,6 +112,114 @@ class CiscoSparkDriverTest extends PHPUnit_Framework_TestCase
 
         $driver = $this->getDriver($this->getValidTestData(), $htmlInterface);
         $this->assertTrue(is_array($driver->getMessages()));
+    }
+
+    /** @test */
+    public function it_returns_the_conversation_answer()
+    {
+        $botResponseData = [
+            'id' => 'bot-id',
+        ];
+        $botResponse = new Response(json_encode($botResponseData));
+
+        $htmlInterface = m::mock(Curl::class);
+        $htmlInterface->shouldReceive('get')
+            ->once()
+            ->with('https://api.ciscospark.com/v1/people/me', [], [
+                'Accept:application/json',
+                'Content-Type:application/json',
+                'Authorization:Bearer my-token',
+            ])
+            ->andReturn($botResponse);
+
+        $msgResponseData = [
+            'text' => 'Hi Julia',
+            'roomId' => 'room-1234567890',
+            'personId' => 'person-0987654321',
+        ];
+        $msgResponse = new Response(json_encode($msgResponseData));
+
+        $htmlInterface->shouldReceive('get')
+            ->once()
+            ->with('https://api.ciscospark.com/v1/messages/Y2lzY29zcGFyazovL3VzL01FU1NBR0UvMzIzZWUyZjAtOWFhZC0xMWU1LTg1YmYtMWRhZjhkNDJlZjlj', [], [
+                'Accept:application/json',
+                'Content-Type:application/json',
+                'Authorization:Bearer my-token',
+            ])
+            ->andReturn($msgResponse);
+
+        $driver = $this->getDriver($this->getValidTestData(), $htmlInterface);
+
+        $incomingMessage = new IncomingMessage('text', '123456', '987654');
+        $answer = $driver->getConversationAnswer($incomingMessage);
+
+        $this->assertSame('text', $answer->getText());
+    }
+
+    /** @test */
+    public function it_can_build_service_payload()
+    {
+        $botResponseData = [
+            'id' => 'bot-id',
+        ];
+        $botResponse = new Response(json_encode($botResponseData));
+
+        $htmlInterface = m::mock(Curl::class);
+        $htmlInterface->shouldReceive('get')
+            ->once()
+            ->with('https://api.ciscospark.com/v1/people/me', [], [
+                'Accept:application/json',
+                'Content-Type:application/json',
+                'Authorization:Bearer my-token',
+            ])
+            ->andReturn($botResponse);
+
+        $msgResponseData = [
+            'text' => 'Hi Julia',
+            'roomId' => 'room-1234567890',
+            'personId' => 'person-0987654321',
+        ];
+        $msgResponse = new Response(json_encode($msgResponseData));
+
+        $htmlInterface->shouldReceive('get')
+            ->once()
+            ->with('https://api.ciscospark.com/v1/messages/Y2lzY29zcGFyazovL3VzL01FU1NBR0UvMzIzZWUyZjAtOWFhZC0xMWU1LTg1YmYtMWRhZjhkNDJlZjlj', [], [
+                'Accept:application/json',
+                'Content-Type:application/json',
+                'Authorization:Bearer my-token',
+            ])
+            ->andReturn($msgResponse);
+
+        $driver = $this->getDriver($this->getValidTestData(), $htmlInterface);
+
+        $incomingMessage = new IncomingMessage('text', '123456', '987654');
+
+        $message = 'string';
+        $payload = $driver->buildServicePayload($message, $incomingMessage);
+
+        $this->assertSame([
+            'roomId' => '123456',
+            'text' => 'string',
+            'markdown' => 'string',
+        ], $payload);
+
+        $message = new OutgoingMessage('message object');
+        $payload = $driver->buildServicePayload($message, $incomingMessage);
+
+        $this->assertSame([
+            'roomId' => '123456',
+            'text' => 'message object',
+            'markdown' => 'message object',
+        ], $payload);
+
+        $message = new Question('question object');
+        $payload = $driver->buildServicePayload($message, $incomingMessage);
+
+        $this->assertSame([
+            'roomId' => '123456',
+            'text' => 'question object',
+            'markdown' => 'question object',
+        ], $payload);
     }
 
     /** @test */
